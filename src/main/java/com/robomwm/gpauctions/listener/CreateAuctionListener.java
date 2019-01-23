@@ -5,10 +5,14 @@ import com.robomwm.gpauctions.auction.Auctioneer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,28 +24,21 @@ public class CreateAuctionListener implements Listener
 {
     private DataStore dataStore;
     private Auctioneer auctioneer;
+    private Set<String> signNames;
 
     public CreateAuctionListener(Plugin plugin, Auctioneer auctioneer)
     {
+        signNames = new HashSet<>(plugin.getConfig().getStringList("signHeader"));
         this.auctioneer = auctioneer;
         dataStore = ((GriefPrevention)(plugin.getServer().getPluginManager().getPlugin("GriefPrevention"))).dataStore;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event)
     {
-        if (!event.getLine(1).equalsIgnoreCase("[auction claim]"))
+        if (!signNames.contains(event.getLine(1).toLowerCase()))
             return;
-
-        double startingBid;
-        try
-        {
-            startingBid = Double.parseDouble(event.getLine(2));
-        }
-        catch (NumberFormatException e)
-        {
-            return;
-        }
 
         long endTime = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(30);
 
@@ -49,9 +46,21 @@ public class CreateAuctionListener implements Listener
         if (claim == null)
             return;
 
+        double startingBid;
+        try
+        {
+            startingBid = Double.parseDouble(event.getLine(2));
+        }
+        catch (NumberFormatException ignored)
+        {
+            startingBid = claim.getArea();
+        }
+
         if (auctioneer.addAuction(new Auction(claim, endTime, startingBid)))
         {
-            event.getPlayer().sendMessage("Auction started");
+            event.getPlayer().sendMessage("Auction started with starting bid price at " + startingBid);
+            //TODO: print time remaining
+            //TODO: populate sign
         }
     }
 }
