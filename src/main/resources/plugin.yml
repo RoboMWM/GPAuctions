@@ -1,0 +1,9 @@
+name: GPAuctions
+author: RoboMWM
+version: ${project.version}
+main: com.robomwm.gpauctions.GPAuctions
+depend: [GriefPrevention, Vault]
+api-version: 1.13
+commands:
+  gpauctions:
+    usage: /gpauctions
