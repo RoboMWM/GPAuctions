@@ -1,5 +1,6 @@
 package com.robomwm.gpauctions.listener;
 
+import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -37,14 +38,20 @@ public class CreateAuctionListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event)
     {
+        GPAuctions.debug("SignChangeEvent called");
+
         if (!signNames.contains(event.getLine(1).toLowerCase()))
             return;
+
+        GPAuctions.debug("Line 1 matched sign");
 
         long endTime = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(30);
 
         Claim claim = dataStore.getClaimAt(event.getBlock().getLocation(), true, null);
         if (claim == null)
             return;
+
+        GPAuctions.debug("Claim found");
 
         double startingBid;
         try
@@ -55,6 +62,8 @@ public class CreateAuctionListener implements Listener
         {
             startingBid = claim.getArea();
         }
+
+        GPAuctions.debug("Set starting bid to " + startingBid);
 
         if (auctioneer.addAuction(new Auction(claim, endTime, startingBid)))
         {

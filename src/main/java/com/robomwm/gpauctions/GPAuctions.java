@@ -26,4 +26,9 @@ public class GPAuctions extends JavaPlugin
         Auctioneer auctioneer = new Auctioneer(this);
         new CreateAuctionListener(this, auctioneer);
     }
+
+    public static void debug(Object object)
+    {
+        System.out.println("[GPAuctions] " + object);
+    }
 }

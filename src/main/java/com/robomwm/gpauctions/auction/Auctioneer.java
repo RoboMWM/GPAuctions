@@ -1,5 +1,6 @@
 package com.robomwm.gpauctions.auction;
 
+import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.usefulutil.UsefulUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -49,8 +50,10 @@ public class Auctioneer
 
     public boolean addAuction(Auction auction)
     {
+        GPAuctions.debug("addAuction called");
         if (auctions.containsKey(auction.getClaimID()))
             return false;
+        GPAuctions.debug("Pre-existing auction does not exist.");
         plugin.getLogger().info("Auction started. " + auction.toString());
         auctions.put(auction.getClaimID(), auction);
         return true;
