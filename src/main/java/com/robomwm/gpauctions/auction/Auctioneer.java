@@ -66,5 +66,6 @@ public class Auctioneer
         for (Auction auction : auctions.values())
             yaml.set(String.valueOf(auction.getClaimID()), auction);
         UsefulUtil.saveStringToFile(plugin, file, yaml.saveToString());
+        GPAuctions.debug("Saved auctions to file.");
     }
 }

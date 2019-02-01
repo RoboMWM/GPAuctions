@@ -1,6 +1,6 @@
 name: GPAuctions
 author: RoboMWM
-version: ${project.version}
+version: ${project.version} commit ${git.commit.id.abbrev}
 main: com.robomwm.gpauctions.GPAuctions
 depend: [GriefPrevention, Vault]
 api-version: 1.13

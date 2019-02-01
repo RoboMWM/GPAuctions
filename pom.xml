@@ -6,7 +6,7 @@
 
     <groupId>com.robomwm</groupId>
     <artifactId>GPAuctions</artifactId>
-    <version>1.0.alpha.3</version>
+    <version>1.0.alpha</version>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -46,8 +46,8 @@
                     </artifactSet>
                     <relocations>
                         <relocation>
-                            <pattern>me.robomwm.usefulutil</pattern>
-                            <shadedPattern>me.robomwm.GPAuctions</shadedPattern>
+                            <pattern>com.robomwm.usefulutil</pattern>
+                            <shadedPattern>com.robomwm.GPAuctions</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -57,6 +57,22 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- append git commit hash to version-->
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.6</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
             </plugin>
