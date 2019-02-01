@@ -56,6 +56,7 @@ public class Auctioneer
         GPAuctions.debug("Pre-existing auction does not exist.");
         plugin.getLogger().info("Auction started. " + auction.toString());
         auctions.put(auction.getClaimID(), auction);
+        saveAuctions();
         return true;
     }
 
