@@ -40,7 +40,7 @@ public class CreateAuctionListener implements Listener
     {
         GPAuctions.debug("SignChangeEvent called");
 
-        if (!signNames.contains(event.getLine(1).toLowerCase()))
+        if (!signNames.contains(event.getLine(0).toLowerCase()))
             return;
 
         GPAuctions.debug("Line 1 matched sign");
@@ -56,7 +56,7 @@ public class CreateAuctionListener implements Listener
         double startingBid;
         try
         {
-            startingBid = Double.parseDouble(event.getLine(2));
+            startingBid = Double.parseDouble(event.getLine(1));
         }
         catch (NumberFormatException ignored)
         {
