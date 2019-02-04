@@ -22,20 +22,23 @@ public class Auction implements ConfigurationSerializable
     private long claimID;
     private long endTime;
     private double startingBid;
+    private UUID owner;
     private Stack<Bid> bids = new Stack<>();
 
     public Auction(Claim claim, long endTime, double startingBid)
     {
         this.claimID = claim.getID();
+        this.owner = claim.ownerID;
         this.endTime = endTime;
         this.startingBid = startingBid;
     }
 
     public Auction(Map<String, Object> map)
     {
-        this.claimID = (long)map.get("claimID");
+        this.claimID = (int)map.get("claimID");
+        this.owner = UUID.fromString((String)map.get("owner"));
         this.endTime = (long)map.get("endTime");
-        this.startingBid = (long)map.get("startingBid");
+        this.startingBid = (double)map.get("startingBid");
         for (String unformattedBid : (List<String>)map.get("bids"))
         {
             String[] bid = unformattedBid.split(",");
@@ -76,6 +79,7 @@ public class Auction implements ConfigurationSerializable
     {
         Map<String, Object> map = new HashMap<>();
         map.put("claimID", claimID);
+        map.put("owner", owner.toString());
         map.put("endTime", endTime);
         map.put("startingBid", startingBid);
         List<String> bidsList = new ArrayList<>();
