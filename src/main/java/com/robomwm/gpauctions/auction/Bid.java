@@ -16,7 +16,6 @@ public class Bid
 
     public Bid(Player player, double price)
     {
-        //TODO: verify player balance can cover price
         this.bidderUUID = player.getUniqueId();
         this.price = price;
     }
@@ -35,5 +34,12 @@ public class Bid
     public UUID getBidderUUID()
     {
         return bidderUUID;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "UUID: " + bidderUUID.toString() +
+                " Price: " + price;
     }
 }

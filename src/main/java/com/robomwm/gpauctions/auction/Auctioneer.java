@@ -5,12 +5,15 @@ import com.robomwm.usefulutil.UsefulUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -44,10 +47,17 @@ public class Auctioneer
             @Override
             public void run()
             {
-                for (Auction auction : auctions.values())
+                Iterator<Auction> auctionIterator = auctions.values().iterator();
+
+                while (auctionIterator.hasNext())
                 {
+                    Auction auction = auctionIterator.next();
+
                     if (auction.isEnded())
+                    {
                         endAuction(auction);
+                        auctionIterator.remove();
+                    }
                 }
             }
         }.runTaskTimer(plugin, 1200L, 1200L);
@@ -77,6 +87,24 @@ public class Auctioneer
         return true;
     }
 
+    public boolean addBid(Player player, Location location)
+    {
+        Claim claim = dataStore.getClaimAt(location, false, null);
+        if (claim == null)
+            return false;
+
+        Auction auction = auctions.get(claim.getID());
+        if (auction == null)
+            return false;
+
+        double balance = 0;
+        //TODO: Check if player has sufficient balance to make bid
+        if (balance < auction.getNextBidPrice())
+            return false;
+
+        return auction.addBid(new Bid(player, auction.getNextBidPrice()));
+    }
+
     private void saveAuctions()
     {
         YamlConfiguration yaml = new YamlConfiguration();
@@ -88,11 +116,29 @@ public class Auctioneer
 
     private void endAuction(Auction auction)
     {
+        plugin.getLogger().info("Auction " + auction.toString() + " ended.");
+        Claim claim = dataStore.getClaim(auction.getClaimID());
+        PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
+        Bid winningBid = findWinningBid(auction);
 
+        //No winner, return to owner
+        if (winningBid == null)
+        {
+            playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() + claim.getArea());
+            claim.ownerID = auction.getOwner();
+            plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
+            return;
+        }
+
+        PlayerData winnerData = dataStore.getPlayerData(winningBid.getBidderUUID());
+        winnerData.setBonusClaimBlocks(winnerData.getBonusClaimBlocks() + claim.getArea());
+        claim.ownerID = winningBid.getBidderUUID();
+        plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
     }
 
     private Bid findWinningBid(Auction auction)
     {
-
+        //TODO: implement
+        return null;
     }
 }

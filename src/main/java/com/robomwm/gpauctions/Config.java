@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public enum Config
 {
-    BID_PERCENTAGE(0.1D),
+    BID_PERCENTAGE(1.1D),
     SIGN_HEADER(Arrays.asList("[auction claim]", "[ac]"));
 
     public static void initialize(Plugin plugin)

@@ -1,5 +1,6 @@
 package com.robomwm.gpauctions.auction;
 
+import com.robomwm.gpauctions.Config;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -70,7 +71,7 @@ public class Auction implements ConfigurationSerializable
         if (bids.isEmpty())
             return startingBid;
         else
-            return bids.peek().getPrice() *
+            return bids.peek().getPrice() * Config.BID_PERCENTAGE.asDouble();
     }
 
     public UUID getOwner()

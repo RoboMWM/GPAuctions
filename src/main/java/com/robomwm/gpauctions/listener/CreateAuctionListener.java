@@ -1,5 +1,6 @@
 package com.robomwm.gpauctions.listener;
 
+import com.robomwm.gpauctions.Config;
 import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
@@ -28,7 +29,7 @@ public class CreateAuctionListener implements Listener
 
     public CreateAuctionListener(Plugin plugin, Auctioneer auctioneer, DataStore dataStore)
     {
-        signNames = new HashSet<>(plugin.getConfig().getStringList("signHeader"));
+        signNames = new HashSet<>(Config.SIGN_HEADER.asStringList());
         this.auctioneer = auctioneer;
         this.dataStore = dataStore;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
