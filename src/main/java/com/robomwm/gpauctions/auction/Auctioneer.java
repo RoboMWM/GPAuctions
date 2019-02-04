@@ -2,6 +2,8 @@ package com.robomwm.gpauctions.auction;
 
 import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.usefulutil.UsefulUtil;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.DataStore;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -22,10 +24,12 @@ public class Auctioneer
     private Plugin plugin;
     private File file;
     private Map<Long, Auction> auctions = new HashMap<>();
+    private DataStore dataStore;
 
-    public Auctioneer(Plugin plugin)
+    public Auctioneer(Plugin plugin, DataStore dataStore)
     {
         this.plugin = plugin;
+        this.dataStore = dataStore;
         file = new File(plugin.getDataFolder() + File.separator + "auctions.data");
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
         for (String key : yaml.getKeys(false))
@@ -53,10 +57,18 @@ public class Auctioneer
         GPAuctions.debug("addAuction called");
         if (auctions.containsKey(auction.getClaimID()))
             return false;
+
         GPAuctions.debug("Pre-existing auction does not exist.");
+
+        Claim claim = dataStore.getClaim(auction.getClaimID());
+        claim.ownerID = null;
+        claim.clearPermissions();
+        GPAuctions.debug("Set claim owner to null (admin claim) and cleared trustlist");
+
         plugin.getLogger().info("Auction started. " + auction.toString());
         auctions.put(auction.getClaimID(), auction);
         saveAuctions();
+
         return true;
     }
 

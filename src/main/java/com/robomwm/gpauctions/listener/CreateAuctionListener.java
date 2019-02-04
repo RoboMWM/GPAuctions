@@ -27,11 +27,11 @@ public class CreateAuctionListener implements Listener
     private Auctioneer auctioneer;
     private Set<String> signNames;
 
-    public CreateAuctionListener(Plugin plugin, Auctioneer auctioneer)
+    public CreateAuctionListener(Plugin plugin, Auctioneer auctioneer, DataStore dataStore)
     {
         signNames = new HashSet<>(plugin.getConfig().getStringList("signHeader"));
         this.auctioneer = auctioneer;
-        dataStore = ((GriefPrevention)(plugin.getServer().getPluginManager().getPlugin("GriefPrevention"))).dataStore;
+        this.dataStore = dataStore;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
