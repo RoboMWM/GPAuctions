@@ -5,7 +5,9 @@ import com.robomwm.usefulutil.UsefulUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -98,7 +100,7 @@ public class Auctioneer
             return false;
 
         double balance = 0;
-        //TODO: Check if player has sufficient balance to make bid
+        //TODO: get balance
         if (balance < auction.getNextBidPrice())
             return false;
 
@@ -133,12 +135,25 @@ public class Auctioneer
         PlayerData winnerData = dataStore.getPlayerData(winningBid.getBidderUUID());
         winnerData.setBonusClaimBlocks(winnerData.getBonusClaimBlocks() + claim.getArea());
         claim.ownerID = winningBid.getBidderUUID();
+        //TODO: deduct balance
         plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
     }
 
+    /**
+     * Finds a valid, winning bid in an auction.
+     * @param auction
+     * @return
+     */
     private Bid findWinningBid(Auction auction)
     {
-        //TODO: implement
+        for (Bid bid : auction.getBids())
+        {
+            OfflinePlayer player = Bukkit.getOfflinePlayer(bid.getBidderUUID());
+            //TODO: get balance
+            double balance = 0;
+            if (balance > bid.getPrice())
+                return bid;
+        }
         return null;
     }
 }

@@ -1,6 +1,7 @@
 package com.robomwm.gpauctions.auction;
 
 import com.robomwm.gpauctions.Config;
+import com.robomwm.gpauctions.GPAuctions;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -95,6 +96,7 @@ public class Auction implements ConfigurationSerializable
 
         bids.push(bid);
         updateSign();
+        GPAuctions.debug("Added bid " + bid.toString() + " to auction " + this.toString());
         return true;
     }
 
@@ -106,6 +108,11 @@ public class Auction implements ConfigurationSerializable
     private boolean cancelBid(UUID playerUUID)
     {
         throw new NotImplementedException();
+    }
+
+    public Stack<Bid> getBids()
+    {
+        return bids;
     }
 
     @Override
