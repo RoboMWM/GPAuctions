@@ -4,6 +4,7 @@ import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.usefulutil.UsefulUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -64,6 +65,9 @@ public class Auctioneer
         claim.ownerID = null;
         claim.clearPermissions();
         GPAuctions.debug("Set claim owner to null (admin claim) and cleared trustlist");
+        PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
+        playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() - claim.getArea());
+        GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
 
         plugin.getLogger().info("Auction started. " + auction.toString());
         auctions.put(auction.getClaimID(), auction);

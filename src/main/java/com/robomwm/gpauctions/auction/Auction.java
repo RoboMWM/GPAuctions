@@ -46,6 +46,11 @@ public class Auction implements ConfigurationSerializable
         }
     }
 
+    public UUID getOwner()
+    {
+        return owner;
+    }
+
     public long getClaimID()
     {
         return claimID;
