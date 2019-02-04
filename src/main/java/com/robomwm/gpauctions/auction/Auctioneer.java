@@ -46,8 +46,8 @@ public class Auctioneer
             {
                 for (Auction auction : auctions.values())
                 {
-                    //todo: check if ended
-                    // transfer/delete claim
+                    if (auction.isEnded())
+                        endAuction(auction);
                 }
             }
         }.runTaskTimer(plugin, 1200L, 1200L);
@@ -69,19 +69,30 @@ public class Auctioneer
         playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() - claim.getArea());
         GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
 
-        plugin.getLogger().info("Auction started. " + auction.toString());
         auctions.put(auction.getClaimID(), auction);
         saveAuctions();
+        auction.updateSign();
+        plugin.getLogger().info("Auction started. " + auction.toString());
 
         return true;
     }
 
-    public void saveAuctions()
+    private void saveAuctions()
     {
         YamlConfiguration yaml = new YamlConfiguration();
         for (Auction auction : auctions.values())
             yaml.set(String.valueOf(auction.getClaimID()), auction);
         UsefulUtil.saveStringToFile(plugin, file, yaml.saveToString());
         GPAuctions.debug("Saved auctions to file.");
+    }
+
+    private void endAuction(Auction auction)
+    {
+
+    }
+
+    private Bid findWinningBid(Auction auction)
+    {
+
     }
 }

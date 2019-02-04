@@ -1,6 +1,10 @@
 package com.robomwm.gpauctions.auction;
 
 import me.ryanhamshire.GriefPrevention.Claim;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -24,19 +28,22 @@ public class Auction implements ConfigurationSerializable
     private double startingBid;
     private UUID owner;
     private Stack<Bid> bids = new Stack<>();
+    private Sign sign;
 
-    public Auction(Claim claim, long endTime, double startingBid)
+    public Auction(Claim claim, long endTime, double startingBid, Sign sign)
     {
         this.claimID = claim.getID();
         this.owner = claim.ownerID;
         this.endTime = endTime;
         this.startingBid = startingBid;
+        this.sign = sign;
     }
 
     public Auction(Map<String, Object> map)
     {
         this.claimID = (int)map.get("claimID");
         this.owner = UUID.fromString((String)map.get("owner"));
+        this.sign = (Sign)((Location)map.get("signLocation")).getBlock().getState();
         this.endTime = (long)map.get("endTime");
         this.startingBid = (double)map.get("startingBid");
         for (String unformattedBid : (List<String>)map.get("bids"))
@@ -44,6 +51,26 @@ public class Auction implements ConfigurationSerializable
             String[] bid = unformattedBid.split(",");
             bids.push(new Bid(bid[0], Double.parseDouble(bid[1])));
         }
+    }
+
+    public void updateSign()
+    {
+        //TODO: update sign
+        sign.setLine(0, "Real Estate");
+        sign.setLine(1, ChatColor.DARK_GREEN + "Auction");
+        String name = "";
+        if (owner != null && Bukkit.getOfflinePlayer(owner) != null)
+            name = Bukkit.getOfflinePlayer(owner).getName();
+        sign.setLine(2, name);
+
+    }
+
+    public double getNextBidPrice()
+    {
+        if (bids.isEmpty())
+            return startingBid;
+        else
+            return bids.peek().getPrice() *
     }
 
     public UUID getOwner()
@@ -66,6 +93,7 @@ public class Auction implements ConfigurationSerializable
             return false;
 
         bids.push(bid);
+        updateSign();
         return true;
     }
 
@@ -85,6 +113,7 @@ public class Auction implements ConfigurationSerializable
         Map<String, Object> map = new HashMap<>();
         map.put("claimID", claimID);
         map.put("owner", owner.toString());
+        map.put("signLocation", sign.getLocation());
         map.put("endTime", endTime);
         map.put("startingBid", startingBid);
         List<String> bidsList = new ArrayList<>();

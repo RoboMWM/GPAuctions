@@ -5,13 +5,12 @@ import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -65,11 +64,10 @@ public class CreateAuctionListener implements Listener
 
         GPAuctions.debug("Set starting bid to " + startingBid);
 
-        if (auctioneer.addAuction(new Auction(claim, endTime, startingBid)))
+        if (auctioneer.addAuction(new Auction(claim, endTime, startingBid, (Sign)event.getBlock().getState())))
         {
             event.getPlayer().sendMessage("Auction started with starting bid price at " + startingBid);
             //TODO: print time remaining
-            //TODO: populate sign
         }
     }
 }

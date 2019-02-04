@@ -3,13 +3,10 @@ package com.robomwm.gpauctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import com.robomwm.gpauctions.listener.CreateAuctionListener;
-import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Arrays;
 
 /**
  * Created on 1/20/2019.
@@ -18,13 +15,10 @@ import java.util.Arrays;
  */
 public class GPAuctions extends JavaPlugin
 {
-
     @Override
     public void onEnable()
     {
-        getConfig().addDefault("signHeader", Arrays.asList("[auction claim]", "[ac]"));
-        getConfig().options().copyDefaults(true);
-        saveConfig();
+        Config.initialize(this);
 
         DataStore dataStore = ((GriefPrevention)(this.getServer().getPluginManager().getPlugin("GriefPrevention"))).dataStore;
         
