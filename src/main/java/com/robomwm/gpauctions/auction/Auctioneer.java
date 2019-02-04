@@ -5,12 +5,14 @@ import com.robomwm.usefulutil.UsefulUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.PlayerData;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -31,11 +33,14 @@ public class Auctioneer
     private File file;
     private Map<Long, Auction> auctions = new HashMap<>();
     private DataStore dataStore;
+    private static Economy economy;
 
     public Auctioneer(Plugin plugin, DataStore dataStore)
     {
         this.plugin = plugin;
         this.dataStore = dataStore;
+        RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
+        economy = rsp.getProvider();
         file = new File(plugin.getDataFolder() + File.separator + "auctions.data");
         YamlConfiguration yaml = YamlConfiguration.loadConfiguration(file);
         for (String key : yaml.getKeys(false))
@@ -89,22 +94,25 @@ public class Auctioneer
         return true;
     }
 
-    public boolean addBid(Player player, Location location)
+    public Bid addBid(Player player, Location location)
     {
         Claim claim = dataStore.getClaimAt(location, false, null);
         if (claim == null)
-            return false;
+            return null;
 
         Auction auction = auctions.get(claim.getID());
         if (auction == null)
-            return false;
+            return null;
 
-        double balance = 0;
-        //TODO: get balance
+        double balance = economy.getBalance(player);
         if (balance < auction.getNextBidPrice())
-            return false;
+            return null;
 
-        return auction.addBid(new Bid(player, auction.getNextBidPrice()));
+        Bid bid = new Bid(player, auction.getNextBidPrice());
+
+        if (auction.addBid(new Bid(player, auction.getNextBidPrice())))
+            return bid;
+        return null;
     }
 
     private void saveAuctions()
@@ -135,7 +143,7 @@ public class Auctioneer
         PlayerData winnerData = dataStore.getPlayerData(winningBid.getBidderUUID());
         winnerData.setBonusClaimBlocks(winnerData.getBonusClaimBlocks() + claim.getArea());
         claim.ownerID = winningBid.getBidderUUID();
-        //TODO: deduct balance
+        economy.withdrawPlayer(plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()), winningBid.getPrice());
         plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
     }
 
@@ -149,11 +157,15 @@ public class Auctioneer
         for (Bid bid : auction.getBids())
         {
             OfflinePlayer player = Bukkit.getOfflinePlayer(bid.getBidderUUID());
-            //TODO: get balance
-            double balance = 0;
+            double balance = economy.getBalance(player);
             if (balance > bid.getPrice())
                 return bid;
         }
         return null;
+    }
+
+    public static String format(double value)
+    {
+        return economy.format(value);
     }
 }

@@ -68,7 +68,7 @@ public class CreateAuctionListener implements Listener
         if (auctioneer.addAuction(new Auction(claim, endTime, startingBid, (Sign)event.getBlock().getState())))
         {
             event.getPlayer().sendMessage("Auction started with starting bid price at " + startingBid);
-            //TODO: print time remaining
+            //TODO: configurable
         }
     }
 }

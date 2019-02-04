@@ -20,6 +20,7 @@ public class Bid
         this.price = price;
     }
 
+
     public Bid(String uuid, double price)
     {
         this.bidderUUID = UUID.fromString(uuid);

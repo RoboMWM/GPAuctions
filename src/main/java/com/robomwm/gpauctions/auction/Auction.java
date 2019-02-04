@@ -57,14 +57,14 @@ public class Auction implements ConfigurationSerializable
 
     public void updateSign()
     {
-        //TODO: update sign
         sign.setLine(0, "Real Estate");
         sign.setLine(1, ChatColor.DARK_GREEN + "Auction");
         String name = "";
         if (owner != null && Bukkit.getOfflinePlayer(owner) != null)
             name = Bukkit.getOfflinePlayer(owner).getName();
         sign.setLine(2, name);
-
+        sign.setLine(3, Auctioneer.format(getNextBidPrice()));
+        sign.update(false, false);
     }
 
     public double getNextBidPrice()

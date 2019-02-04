@@ -3,6 +3,7 @@ package com.robomwm.gpauctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import com.robomwm.gpauctions.listener.CreateAuctionListener;
+import com.robomwm.gpauctions.listener.MakeBidListener;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -25,6 +26,7 @@ public class GPAuctions extends JavaPlugin
         ConfigurationSerialization.registerClass(Auction.class);
         Auctioneer auctioneer = new Auctioneer(this, dataStore);
         new CreateAuctionListener(this, auctioneer, dataStore);
+        new MakeBidListener(this, auctioneer);
     }
 
     public static void debug(Object object)
