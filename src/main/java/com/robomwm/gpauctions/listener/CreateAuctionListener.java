@@ -6,6 +6,7 @@ import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -76,8 +77,8 @@ public class CreateAuctionListener implements Listener
 
         if (auctioneer.addAuction(new Auction(claim, endTime, startingBid, (Sign)event.getBlock().getState())))
         {
-            event.getPlayer().sendMessage("Auction started with starting bid price at " + startingBid);
-            //TODO: configurable
+            event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes(
+                    '&', "[&6GPAuctions&f] &bAuction has started with starting bid of &a") + startingBid);
         }
     }
 }
