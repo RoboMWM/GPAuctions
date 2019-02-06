@@ -53,6 +53,9 @@ public class CreateAuctionListener implements Listener
 
         GPAuctions.debug("Claim found");
 
+        if (claim.ownerID != event.getPlayer().getUniqueId() && !event.getPlayer().hasPermission("griefprevention.adminclaims"))
+            return;
+
         double startingBid;
         try
         {
