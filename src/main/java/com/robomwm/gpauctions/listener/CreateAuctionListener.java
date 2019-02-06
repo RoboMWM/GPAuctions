@@ -51,6 +51,12 @@ public class CreateAuctionListener implements Listener
         if (claim == null)
             return;
 
+        if (claim.parent != null)
+        {
+            GPAuctions.debug("Sign was placed in subclaim, canceling auction creation.");
+            return;
+        }
+
         GPAuctions.debug("Claim found");
 
         if (claim.ownerID != event.getPlayer().getUniqueId() && !event.getPlayer().hasPermission("griefprevention.adminclaims"))
