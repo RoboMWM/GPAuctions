@@ -82,9 +82,13 @@ public class Auctioneer
         claim.ownerID = null;
         claim.clearPermissions();
         GPAuctions.debug("Set claim owner to null (admin claim) and cleared trustlist");
-        PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
-        playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() - claim.getArea());
-        GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
+
+        if (auction.getOwner() != null)
+        {
+            PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
+            playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() - claim.getArea());
+            GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
+        }
 
         auctions.put(auction.getClaimID(), auction);
         saveAuctions();
@@ -134,6 +138,11 @@ public class Auctioneer
         //No winner, return to owner
         if (winningBid == null)
         {
+            if (auction.getOwner() == null)
+            {
+                plugin.getLogger().info("No winner. Auction canceled (nothing to do since originally was admin claim.");
+                return;
+            }
             playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() + claim.getArea());
             claim.ownerID = auction.getOwner();
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
