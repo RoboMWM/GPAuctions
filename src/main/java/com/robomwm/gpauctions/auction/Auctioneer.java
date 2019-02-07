@@ -90,6 +90,8 @@ public class Auctioneer
             GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
         }
 
+        dataStore.saveClaim(claim);
+
         auctions.put(auction.getClaimID(), auction);
         saveAuctions();
         auction.updateSign();
@@ -145,6 +147,7 @@ public class Auctioneer
             }
             playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() + claim.getArea());
             claim.ownerID = auction.getOwner();
+            dataStore.saveClaim(claim);
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
             return;
         }
@@ -153,6 +156,7 @@ public class Auctioneer
         winnerData.setBonusClaimBlocks(winnerData.getBonusClaimBlocks() + claim.getArea());
         claim.ownerID = winningBid.getBidderUUID();
         economy.withdrawPlayer(plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()), winningBid.getPrice());
+        dataStore.saveClaim(claim);
         plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
     }
 
