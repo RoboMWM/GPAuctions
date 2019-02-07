@@ -47,6 +47,7 @@ public class Auction implements ConfigurationSerializable
         String ownerUUID = (String)map.get("owner");
         if (ownerUUID != null)
             this.owner = UUID.fromString(ownerUUID);
+        GPAuctions.debug("sign location load " + map.get("signLocation"));
         this.sign = (Sign)((Location)map.get("signLocation")).getBlock().getState();
         this.endTime = (long)map.get("endTime");
         this.startingBid = (double)map.get("startingBid");
@@ -124,6 +125,7 @@ public class Auction implements ConfigurationSerializable
         map.put("claimID", claimID);
         if (owner != null)
             map.put("owner", owner.toString());
+        GPAuctions.debug("sign location save " + sign.getLocation().toString());
         map.put("signLocation", sign.getLocation());
         map.put("endTime", endTime);
         map.put("startingBid", startingBid);
