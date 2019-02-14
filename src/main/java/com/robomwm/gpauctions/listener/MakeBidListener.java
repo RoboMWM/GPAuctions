@@ -1,13 +1,16 @@
 package com.robomwm.gpauctions.listener;
 
+import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
+import com.robomwm.gpauctions.auction.Bid;
 import com.robomwm.usefulutil.UsefulUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -33,6 +36,8 @@ public class MakeBidListener implements Listener
     @EventHandler(ignoreCancelled = true)
     private void onSignClick(PlayerInteractEvent event)
     {
+        Player player = event.getPlayer();
+
         switch (event.getAction())
         {
             case RIGHT_CLICK_BLOCK:
@@ -43,16 +48,20 @@ public class MakeBidListener implements Listener
 
         if (event.getClickedBlock().getType() != Material.SIGN)
             return;
+        GPAuctions.debug("Sign clicked");
         if (!((Sign)event.getClickedBlock().getState()).getLine(0).equalsIgnoreCase("Real Estate"))
             return;
+        GPAuctions.debug("Is a real estate-labeled sign");
 
-        if (event.getPlayer().isSneaking())
+        if (player.isSneaking())
         {
-            event.getPlayer().sendMessage(getInfo(event.getClickedBlock().getLocation()));
+            player.sendMessage(getInfo(event.getClickedBlock().getLocation()));
             return;
         }
 
-        auctioneer.addBid(event.getPlayer(), event.getClickedBlock().getLocation());
+        Bid bid = auctioneer.addBid(player, event.getClickedBlock().getLocation());
+        if (bid != null)
+            player.sendMessage("Placed bid of " + bid.getPrice());
     }
 
     private String getInfo(Location location)

@@ -120,18 +120,22 @@ public class Auctioneer
 
     public Bid addBid(Player player, Location location)
     {
+        GPAuctions.debug("addBid called");
         Claim claim = dataStore.getClaimAt(location, false, null);
         if (claim == null)
             return null;
 
+        GPAuctions.debug("claim found");
         Auction auction = auctions.get(claim.getID());
         if (auction == null)
             return null;
 
+        GPAuctions.debug("auction found");
         double balance = economy.getBalance(player);
         if (balance < auction.getNextBidPrice())
             return null;
 
+        GPAuctions.debug("sufficient balance");
         Bid bid = new Bid(player, auction.getNextBidPrice());
 
         if (auction.addBid(new Bid(player, auction.getNextBidPrice())))
