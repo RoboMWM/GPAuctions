@@ -82,6 +82,7 @@ public class CreateAuctionListener implements Listener
         {
             event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes(
                     '&', "[&6GPAuctions&f] &bAuction has started with starting bid of &a") + startingBid);
+            event.setCancelled(true);
         }
     }
 }
