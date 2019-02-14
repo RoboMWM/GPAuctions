@@ -100,6 +100,24 @@ public class Auctioneer
         return true;
     }
 
+    public Auction getAuction(Location location)
+    {
+        Claim claim = dataStore.getClaimAt(location, false, null);
+        if (claim == null)
+            return null;
+        return getAuction(claim);
+    }
+
+    public Auction getAuction(Claim claim)
+    {
+        return getAuction(claim.getID());
+    }
+
+    public Auction getAuction(long claimID)
+    {
+        return auctions.get(claimID);
+    }
+
     public Bid addBid(Player player, Location location)
     {
         Claim claim = dataStore.getClaimAt(location, false, null);
