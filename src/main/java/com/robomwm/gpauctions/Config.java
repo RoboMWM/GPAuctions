@@ -14,7 +14,9 @@ import java.util.Map;
 public enum Config
 {
     BID_PERCENTAGE(1.1D),
-    SIGN_HEADER(Arrays.asList("[auction claim]", "[ac]"));
+    SIGN_HEADER(Arrays.asList("[auction claim]", "[ac]")),
+    DEFAULT_AUCTION_DURATION_HOURS(720),
+    DEFAULT_STARTING_PRICE_PER_CLAIMBLOCK(1);
 
     public static void initialize(Plugin plugin)
     {
@@ -54,6 +56,11 @@ public enum Config
     public double asDouble()
     {
         return (double)value;
+    }
+
+    public int asInt()
+    {
+        return (int)value;
     }
 
     public List<String> asStringList()
