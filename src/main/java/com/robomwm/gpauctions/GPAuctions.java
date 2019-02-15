@@ -27,6 +27,7 @@ public class GPAuctions extends JavaPlugin
         Auctioneer auctioneer = new Auctioneer(this, dataStore);
         new CreateAuctionListener(this, auctioneer, dataStore);
         new MakeBidListener(this, auctioneer);
+        getCommand("gpacancel");
     }
 
     public static void debug(Object object)

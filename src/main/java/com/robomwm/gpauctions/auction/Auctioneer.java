@@ -118,6 +118,11 @@ public class Auctioneer
         return auctions.get(claimID);
     }
 
+    public boolean cancelAuction(Auction auction)
+    {
+        return auctions.remove(auction.getClaimID()) != null;
+    }
+
     public Bid addBid(Player player, Location location)
     {
         GPAuctions.debug("addBid called");

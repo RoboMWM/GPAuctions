@@ -7,3 +7,5 @@ api-version: 1.13
 commands:
   gpauctions:
     usage: /gpauctions
+  gpacancel:
+    usage: /gpacancel - Cancels an auction. Stand in the claim where the auction is occurring.
