@@ -94,12 +94,20 @@ public class Auction implements ConfigurationSerializable
 
     public boolean addBid(Bid bid)
     {
+        GPAuctions.debug("checking conditions before adding bid to auction...");
         if (isEnded())
             return false;
+        GPAuctions.debug("auction has not ended.");
         if (bids.isEmpty() && bid.getPrice() < startingBid)
+        {
+            GPAuctions.debug("bid is less than starting bid.");
             return false;
-        if (bid.getPrice() < bids.peek().getPrice())
+        }
+        else if (bid.getPrice() < bids.peek().getPrice())
+        {
+            GPAuctions.debug("bid is less than current bid.");
             return false;
+        }
 
         bids.push(bid);
         updateSign();
