@@ -46,7 +46,7 @@ public class CreateAuctionListener implements Listener
 
         GPAuctions.debug("Line 1 matched sign");
 
-        long endTime = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(Config.DEFAULT_AUCTION_DURATION_HOURS.asInt());
+        long endTime = System.currentTimeMillis() + TimeUnit.HOURS.toMillis(Config.DEFAULT_AUCTION_DURATION_HOURS.asLong());
 
         Claim claim = dataStore.getClaimAt(event.getBlock().getLocation(), true, null);
         if (claim == null)

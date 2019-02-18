@@ -53,6 +53,11 @@ public enum Config
         return value;
     }
 
+    public long asLong()
+    {
+        return (long)value;
+    }
+
     public double asDouble()
     {
         return (double)value;
