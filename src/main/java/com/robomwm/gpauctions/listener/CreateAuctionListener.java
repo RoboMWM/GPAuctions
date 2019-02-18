@@ -73,7 +73,7 @@ public class CreateAuctionListener implements Listener
         }
         catch (NumberFormatException ignored)
         {
-            startingBid = claim.getArea();
+            startingBid = claim.getArea() * Config.DEFAULT_STARTING_PRICE_PER_CLAIMBLOCK;
         }
 
         GPAuctions.debug("Set starting bid to " + startingBid);
