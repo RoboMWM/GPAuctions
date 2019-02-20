@@ -55,7 +55,9 @@ public enum Config
 
     public long asLong()
     {
-        return (long)value;
+        if (value instanceof Long)
+            return (long)value;
+        return ((Number)value).longValue();
     }
 
     public double asDouble()
