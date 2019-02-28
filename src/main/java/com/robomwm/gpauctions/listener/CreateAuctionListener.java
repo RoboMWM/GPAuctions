@@ -78,6 +78,9 @@ public class CreateAuctionListener implements Listener
 
         GPAuctions.debug("Set starting bid to " + startingBid);
 
+        if (startingBid < 0)
+            return;
+
         if (auctioneer.addAuction(new Auction(claim, endTime, startingBid, (Sign)event.getBlock().getState())))
         {
             event.getPlayer().sendMessage(ChatColor.translateAlternateColorCodes(

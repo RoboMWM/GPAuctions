@@ -34,6 +34,8 @@ public class Auction implements ConfigurationSerializable
 
     public Auction(Claim claim, long endTime, double startingBid, Sign sign)
     {
+        if (startingBid < 0)
+            throw new IllegalArgumentException("startingBid cannot be a negative value");
         this.claimID = claim.getID();
         this.owner = claim.ownerID;
         this.endTime = endTime;
