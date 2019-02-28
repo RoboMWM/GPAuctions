@@ -2,6 +2,7 @@ package com.robomwm.gpauctions.auction;
 
 import com.robomwm.gpauctions.Config;
 import com.robomwm.gpauctions.GPAuctions;
+import com.robomwm.usefulutil.UsefulUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created on 1/20/2019.
@@ -162,5 +164,10 @@ public class Auction implements ConfigurationSerializable
         return "Claim ID: " + claimID +
                 " endTime: " + endTime +
                 " startingBid: " + startingBid;
+    }
+
+    public String getEndTimeString()
+    {
+        return UsefulUtil.formatTime(TimeUnit.MILLISECONDS.toSeconds(this.getEndTime() - System.currentTimeMillis()));
     }
 }

@@ -61,7 +61,18 @@ public class MakeBidListener implements Listener
 
         Bid bid = auctioneer.addBid(player, event.getClickedBlock().getLocation());
         if (bid != null)
-            player.sendMessage("Placed bid of " + bid.getPrice());
+        {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "[&6GPAuctions&f] &bYour bid of &a" + bid.getPrice() +
+                            " &bhas been accepted. " +
+                            "If you are the Auction winner payment will be due in &a" +
+                            auctioneer.getAuction(event.getClickedBlock().getLocation()).getEndTimeString() +
+                            "&b."
+            ));
+        }
+        else
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "[&6GPAuctions&f] &bYou have insufficient funds to place a bid at this time."));
     }
 
     private String getInfo(Location location)
