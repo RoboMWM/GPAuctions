@@ -18,6 +18,11 @@ public class CancelCommand implements CommandExecutor
 {
     private Auctioneer auctioneer;
 
+    public CancelCommand(Auctioneer auctioneer)
+    {
+        this.auctioneer = auctioneer;
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
