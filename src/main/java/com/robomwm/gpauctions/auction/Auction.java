@@ -105,7 +105,7 @@ public class Auction implements ConfigurationSerializable
             GPAuctions.debug("bid is less than starting bid.");
             return false;
         }
-        else if (bid.getPrice() < bids.peek().getPrice())
+        else if (!bids.isEmpty() && bid.getPrice() < bids.peek().getPrice())
         {
             GPAuctions.debug("bid is less than current bid.");
             return false;
