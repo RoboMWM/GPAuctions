@@ -76,7 +76,7 @@ public class MakeBidListener implements Listener
         return ChatColor.translateAlternateColorCodes('&',
                 "&9----= &f[&6RealEstate Auction Info&f]&9=----\n" +
                 "&bThis &aCLAIM &bis on auction for &a" + auction.getNextBidPrice() + "\n" +
-                "&bThe auction closes in &a" + time + " &bhours.\n" +
+                "&bThe auction closes in &a" + time + "&b.\n" +
                 "&bThe current/previous owner is: &a" + auction.getOwnerName() + "\n" +
                 bidder);
     }
