@@ -5,9 +5,9 @@ import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import com.robomwm.gpauctions.auction.Bid;
 import com.robomwm.usefulutil.UsefulUtil;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,11 +26,14 @@ import java.util.concurrent.TimeUnit;
  */
 public class MakeBidListener implements Listener
 {
+    private Economy economy;
     private Auctioneer auctioneer;
 
     public MakeBidListener(Plugin plugin, Auctioneer auctioneer)
     {
         this.auctioneer = auctioneer;
+        RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
+        economy = rsp.getProvider();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
@@ -53,17 +57,29 @@ public class MakeBidListener implements Listener
             return;
         GPAuctions.debug("Is a real estate-labeled sign");
 
+        Auction auction = auctioneer.getAuction(event.getClickedBlock().getLocation());
+        if (auction == null)
+        {
+            GPAuctions.debug("No auction found at location " + event.getClickedBlock().getLocation());
+            return;
+        }
+
         if (player.isSneaking())
         {
-            String infoMessage = getInfo(event.getClickedBlock().getLocation());
-            if (infoMessage == null)
-                return;
+            String infoMessage = getInfo(auction);
             player.sendMessage(infoMessage);
             return;
         }
 
-        Bid bid = auctioneer.addBid(player, event.getClickedBlock().getLocation());
-        if (bid != null)
+        Bid bid = new Bid(player, auction.getNextBidPrice());
+        if (bid.getPrice() > economy.getBalance(player))
+        {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "[&6GPAuctions&f] &bYou have insufficient funds to place a bid at this time."));
+            return;
+        }
+
+        if (auction.addBid(bid))
         {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                     "[&6GPAuctions&f] &bYour bid of &a" + bid.getPrice() +
@@ -74,18 +90,11 @@ public class MakeBidListener implements Listener
             ));
         }
         else
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "[&6GPAuctions&f] &bYou have insufficient funds to place a bid at this time."));
+            player.sendMessage("[&6GPAuctions&f] Error occurred when attempting to place a bid. (Auction has ended, likely.)");
     }
 
-    private String getInfo(Location location)
+    private String getInfo(Auction auction)
     {
-        Auction auction = auctioneer.getAuction(location);
-        if (auction == null)
-        {
-            GPAuctions.debug("No auction at this shift-rightclicked location: " + location);
-            return null;
-        }
         String time = UsefulUtil.formatTime(TimeUnit.MILLISECONDS.toSeconds(auction.getEndTime() - System.currentTimeMillis()));
 
         String bidder = "No Bidders.";

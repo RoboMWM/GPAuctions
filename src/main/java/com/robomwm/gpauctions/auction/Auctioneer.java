@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -95,6 +94,7 @@ public class Auctioneer
         auctions.put(auction.getClaimID(), auction);
         saveAuctions();
         auction.updateSign();
+        plugin.getLogger().info("Adding auction with ID " + auction.getClaimID());
         plugin.getLogger().info("Auction started. " + auction.toString());
 
         return true;
@@ -129,31 +129,6 @@ public class Auctioneer
         claim.ownerID = auction.getOwner();
 
         return true;
-    }
-
-    public Bid addBid(Player player, Location location)
-    {
-        GPAuctions.debug("addBid called");
-        Claim claim = dataStore.getClaimAt(location, true, null);
-        if (claim == null)
-            return null;
-
-        GPAuctions.debug("claim found");
-        Auction auction = auctions.get(claim.getID());
-        if (auction == null)
-            return null;
-
-        GPAuctions.debug("auction found");
-        double balance = economy.getBalance(player);
-        if (balance < auction.getNextBidPrice())
-            return null;
-
-        GPAuctions.debug("sufficient balance");
-        Bid bid = new Bid(player, auction.getNextBidPrice());
-
-        if (auction.addBid(new Bid(player, auction.getNextBidPrice())))
-            return bid;
-        return null;
     }
 
     private void saveAuctions()
