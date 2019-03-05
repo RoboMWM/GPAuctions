@@ -102,7 +102,7 @@ public class Auctioneer
 
     public Auction getAuction(Location location)
     {
-        Claim claim = dataStore.getClaimAt(location, false, null);
+        Claim claim = dataStore.getClaimAt(location, true, null);
         if (claim == null)
             return null;
         return getAuction(claim);
@@ -134,7 +134,7 @@ public class Auctioneer
     public Bid addBid(Player player, Location location)
     {
         GPAuctions.debug("addBid called");
-        Claim claim = dataStore.getClaimAt(location, false, null);
+        Claim claim = dataStore.getClaimAt(location, true, null);
         if (claim == null)
             return null;
 

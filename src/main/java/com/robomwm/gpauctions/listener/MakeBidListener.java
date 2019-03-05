@@ -55,7 +55,10 @@ public class MakeBidListener implements Listener
 
         if (player.isSneaking())
         {
-            player.sendMessage(getInfo(event.getClickedBlock().getLocation()));
+            String infoMessage = getInfo(event.getClickedBlock().getLocation());
+            if (infoMessage == null)
+                return;
+            player.sendMessage(infoMessage);
             return;
         }
 
@@ -78,6 +81,11 @@ public class MakeBidListener implements Listener
     private String getInfo(Location location)
     {
         Auction auction = auctioneer.getAuction(location);
+        if (auction == null)
+        {
+            GPAuctions.debug("No auction at this shift-rightclicked location: " + location);
+            return null;
+        }
         String time = UsefulUtil.formatTime(TimeUnit.MILLISECONDS.toSeconds(auction.getEndTime() - System.currentTimeMillis()));
 
         String bidder = "No Bidders.";
