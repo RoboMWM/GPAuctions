@@ -2,6 +2,7 @@ package com.robomwm.gpauctions.command;
 
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -36,12 +37,14 @@ public class CancelCommand implements CommandExecutor
 
         if (!hasPermission(auction.getOwner(), player))
         {
-            player.sendMessage("This ain't your auction to cancel.");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "[&6GPAuctions&f] &bThis is not your auction. Bidding may continue."));
             return true;
         }
 
         if (auctioneer.cancelAuction(auction))
-            player.sendMessage("Successfully canceled auction.");
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "[&6GPAuctions&f] &bAuction canceled. Claim returned."));
 
         return true;
     }

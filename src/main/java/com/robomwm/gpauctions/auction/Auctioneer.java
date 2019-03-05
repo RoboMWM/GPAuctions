@@ -120,7 +120,15 @@ public class Auctioneer
 
     public boolean cancelAuction(Auction auction)
     {
-        return auctions.remove(auction.getClaimID()) != null;
+        auction = auctions.remove(auction.getClaimID());
+        if (auction == null)
+            return false;
+        auction.cancelSign();
+
+        Claim claim = dataStore.getClaim(auction.getClaimID());
+        claim.ownerID = auction.getOwner();
+
+        return true;
     }
 
     public Bid addBid(Player player, Location location)
