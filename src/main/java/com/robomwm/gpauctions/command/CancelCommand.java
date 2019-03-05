@@ -34,7 +34,7 @@ public class CancelCommand implements CommandExecutor
             return false;
         }
 
-        if (hasPermission(auction.getOwner(), player))
+        if (!hasPermission(auction.getOwner(), player))
         {
             player.sendMessage("This ain't your auction to cancel.");
             return true;
