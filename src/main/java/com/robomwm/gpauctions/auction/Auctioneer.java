@@ -78,8 +78,8 @@ public class Auctioneer
         GPAuctions.debug("Pre-existing auction does not exist.");
 
         Claim claim = dataStore.getClaim(auction.getClaimID());
-        claim.ownerID = null;
         claim.clearPermissions();
+        dataStore.changeClaimOwner(claim, null);
         GPAuctions.debug("Set claim owner to null (admin claim) and cleared trustlist");
 
         if (auction.getOwner() != null)
@@ -88,8 +88,6 @@ public class Auctioneer
             playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() - claim.getArea());
             GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
         }
-
-        dataStore.saveClaim(claim);
 
         auctions.put(auction.getClaimID(), auction);
         saveAuctions();
@@ -126,7 +124,7 @@ public class Auctioneer
         auction.cancelSign();
 
         Claim claim = dataStore.getClaim(auction.getClaimID());
-        claim.ownerID = auction.getOwner();
+        dataStore.changeClaimOwner(claim, auction.getOwner());
 
         return true;
     }
@@ -156,17 +154,15 @@ public class Auctioneer
                 return;
             }
             playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() + claim.getArea());
-            claim.ownerID = auction.getOwner();
-            dataStore.saveClaim(claim);
+            dataStore.changeClaimOwner(claim, auction.getOwner());
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
             return;
         }
 
         PlayerData winnerData = dataStore.getPlayerData(winningBid.getBidderUUID());
         winnerData.setBonusClaimBlocks(winnerData.getBonusClaimBlocks() + claim.getArea());
-        claim.ownerID = winningBid.getBidderUUID();
+        dataStore.changeClaimOwner(claim, winningBid.getBidderUUID());
         economy.withdrawPlayer(plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()), winningBid.getPrice());
-        dataStore.saveClaim(claim);
         plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
     }
 

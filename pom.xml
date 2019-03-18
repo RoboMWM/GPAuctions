@@ -97,7 +97,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.11.5</version>
+            <version>832ec7e</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
