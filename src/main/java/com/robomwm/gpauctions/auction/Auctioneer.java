@@ -164,6 +164,7 @@ public class Auctioneer
             playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() + claim.getArea());
             dataStore.changeClaimOwner(claim, auction.getOwner());
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
+
             return;
         }
 
@@ -172,6 +173,30 @@ public class Auctioneer
         dataStore.changeClaimOwner(claim, winningBid.getBidderUUID());
         economy.withdrawPlayer(plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()), winningBid.getPrice());
         plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
+
+        String location = GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation());
+        String buyer = plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()).getName();
+
+        GPAuctions.lazyCmdDispatcher("broadcast [&6GPAuctions&f] &b The auction at &a" + location +
+                " &b has closed. The auction winner is &a" + buyer +
+                " &bwith a final bid of &a" + winningBid.getPrice() +
+                "&b.");
+
+        GPAuctions.lazyCmdDispatcher("mail send " + buyer +
+                " [&6GPAuctions&f] &bYou have won the Auction! &a" + winningBid.getPrice() +
+                " &bhas been deducted from your account balance. Your new property at &a" + location +
+                "&b has been transferred into your care.");
+
+        if (auction.getOwner() == null)
+            return;
+
+        String seller = plugin.getServer().getOfflinePlayer(auction.getOwner()).getName();
+
+        GPAuctions.lazyCmdDispatcher("mail send " + seller +
+                " [&6GPAuctions&f] &a" + buyer +
+                " &bhas won your auction at &a" + location +
+                " &b. The final bid was &a" + winningBid.getPrice() +
+                "&b.");
     }
 
     /**

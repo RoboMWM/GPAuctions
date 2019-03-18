@@ -7,7 +7,11 @@ import com.robomwm.gpauctions.listener.CreateAuctionListener;
 import com.robomwm.gpauctions.listener.MakeBidListener;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -34,5 +38,15 @@ public class GPAuctions extends JavaPlugin
     public static void debug(Object object)
     {
         System.out.println("[GPAuctions] " + object);
+    }
+
+    public static String smallFriendlyCoordinate(Location location)
+    {
+        return location.getBlockX() + ", " + location.getBlockZ();
+    }
+
+    public static void lazyCmdDispatcher(String command)
+    {
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatColor.translateAlternateColorCodes('&', command));
     }
 }
