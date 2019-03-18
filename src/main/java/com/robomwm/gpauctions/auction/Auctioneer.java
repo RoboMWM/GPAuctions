@@ -17,8 +17,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created on 1/20/2019.
@@ -206,12 +208,21 @@ public class Auctioneer
      */
     private Bid findWinningBid(Auction auction)
     {
+        Set<String> playersMessaged = new HashSet<>();
+
         for (Bid bid : auction.getBids())
         {
             OfflinePlayer player = Bukkit.getOfflinePlayer(bid.getBidderUUID());
             double balance = economy.getBalance(player);
             if (balance > bid.getPrice())
                 return bid;
+
+            String bidder = plugin.getServer().getOfflinePlayer(bid.getBidderUUID()).getName();
+            if (playersMessaged.add(bidder))
+                GPAuctions.lazyCmdDispatcher("mail send " + bidder +
+                        " [&6GPAuctions&f] &bUh oh! You are too broke to pay! Your bid of " + bid.getPrice() +
+                        " at " + GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation()) +
+                        " has been rejected.");
         }
         return null;
     }
