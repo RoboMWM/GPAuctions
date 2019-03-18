@@ -62,6 +62,11 @@ public class Auction implements ConfigurationSerializable
         }
     }
 
+    public Sign getSign()
+    {
+        return sign;
+    }
+
     public void updateSign()
     {
         sign.setLine(0, "Real Estate");

@@ -58,9 +58,9 @@ public class MakeBidListener implements Listener
         GPAuctions.debug("Is a real estate-labeled sign");
 
         Auction auction = auctioneer.getAuction(event.getClickedBlock().getLocation());
-        if (auction == null)
+        if (auction == null || auction.getSign().getLocation() != event.getClickedBlock().getLocation())
         {
-            GPAuctions.debug("No auction found at location " + event.getClickedBlock().getLocation());
+            GPAuctions.debug("No auction found or incorrect sign used at location " + event.getClickedBlock().getLocation());
             return;
         }
 
