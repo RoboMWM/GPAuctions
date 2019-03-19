@@ -142,6 +142,7 @@ public class Auctioneer
     private void saveAuctions()
     {
         YamlConfiguration yaml = new YamlConfiguration();
+        GPAuctions.debug("Starting to save auctions");
         for (Auction auction : auctions.values())
             yaml.set(String.valueOf(auction.getClaimID()), auction);
         UsefulUtil.saveStringToFile(plugin, file, yaml.saveToString());
