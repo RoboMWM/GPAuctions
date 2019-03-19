@@ -51,8 +51,10 @@ public class CancelCommand implements CommandExecutor
 
     public boolean hasPermission(UUID owner, Player player)
     {
-        if (owner == player.getUniqueId())
+        if (owner == null)
+            return false;
+        if (owner.equals(player.getUniqueId()))
             return true;
-        return owner == null && player.hasPermission("griefprevention.adminclaims");
+        return player.hasPermission("griefprevention.adminclaims");
     }
 }
