@@ -7,7 +7,6 @@ import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -100,10 +99,9 @@ public class Auctioneer
 
         Location location = auction.getSign().getLocation();
 
-        plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), ChatColor.translateAlternateColorCodes('&',
-                "[&6GPAuctions&f] &bAn auction has been created at &a" +
+        GPAuctions.lazyCmdDispatcher("broadcast [&6GPAuctions&f] &bAn auction has been created at &a" +
                         location.getBlockX() + ", " + location.getBlockZ() +
-                        "&b. Bidding will start at &a" + auction.getNextBidPrice() + "&b."));
+                        "&b. Bidding will start at &a" + auction.getNextBidPrice() + "&b.");
 
         return true;
     }
