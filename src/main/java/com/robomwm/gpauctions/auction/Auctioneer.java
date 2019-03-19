@@ -162,7 +162,11 @@ public class Auctioneer
                 plugin.getLogger().info("No winner. Auction canceled (nothing to do since originally was admin claim.");
                 return;
             }
-            playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() + claim.getArea());
+            GPAuctions.debug(playerData + "," + claim);
+            playerData
+                    .setBonusClaimBlocks(
+                            playerData.getBonusClaimBlocks() +
+                                    claim.getArea());
             dataStore.changeClaimOwner(claim, auction.getOwner());
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
 
