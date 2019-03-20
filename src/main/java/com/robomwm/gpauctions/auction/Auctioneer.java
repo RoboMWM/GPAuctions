@@ -4,6 +4,7 @@ import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.usefulutil.UsefulUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -20,6 +21,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created on 1/20/2019.
@@ -33,12 +35,14 @@ public class Auctioneer
     private Plugin plugin;
     private File file;
     private Map<Long, Auction> auctions = new HashMap<>();
+    private GriefPrevention gp;
     private DataStore dataStore;
     private static Economy economy;
 
-    public Auctioneer(Plugin plugin, DataStore dataStore)
+    public Auctioneer(Plugin plugin, GriefPrevention gp, DataStore dataStore)
     {
         this.plugin = plugin;
+        this.gp = gp;
         this.dataStore = dataStore;
         RegisteredServiceProvider<Economy> rsp = plugin.getServer().getServicesManager().getRegistration(Economy.class);
         economy = rsp.getProvider();
@@ -131,7 +135,7 @@ public class Auctioneer
         auction = auctions.remove(auction.getClaimID());
         if (auction == null)
             return false;
-        auction.cancelSign();
+        auction.endSign("Canceled");
 
         Claim claim = dataStore.getClaim(auction.getClaimID());
         dataStore.changeClaimOwner(claim, auction.getOwner());
@@ -152,6 +156,7 @@ public class Auctioneer
     private void endAuction(Auction auction)
     {
         plugin.getLogger().info("Auction " + auction.toString() + " ended.");
+        auction.endSign("Closed");
         Claim claim = dataStore.getClaim(auction.getClaimID());
         PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
         Bid winningBid = findWinningBid(auction);
@@ -164,7 +169,20 @@ public class Auctioneer
                 plugin.getLogger().info("No winner. Auction canceled (nothing to do since originally was admin claim.");
                 return;
             }
+
             GPAuctions.debug(playerData + "," + claim);
+
+            OfflinePlayer owner = plugin.getServer().getOfflinePlayer(auction.getOwner());
+
+            if (isExpiredPlayer(owner))
+            {
+                GPAuctions.lazyCmdDispatcher("mail send " + owner.getName() +
+                        " &f[&6GPAuctions&f] &bYour auction at &a" +
+                        GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation()) +
+                        "&b has closed without bidders. The claim has expired due to inactivity.");
+                return;
+            }
+
             playerData
                     .setBonusClaimBlocks(
                             playerData.getBonusClaimBlocks() +
@@ -172,6 +190,8 @@ public class Auctioneer
             dataStore.savePlayerData(auction.getOwner(), playerData);
             dataStore.changeClaimOwner(claim, auction.getOwner());
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
+            GPAuctions.lazyCmdDispatcher("mail send " + owner.getName() +
+                    " &f[&6GPAuctions&f] &bYour auction has closed without bidders. The claim has been returned to you.");
 
             return;
         }
@@ -237,5 +257,14 @@ public class Auctioneer
     public static String format(double value)
     {
         return economy.format(value);
+    }
+
+    public boolean isExpiredPlayer(OfflinePlayer player)
+    {
+        long lastPlayed = player.getLastSeen(); //getLastPlayed is deprecated. (Maybe by Paper?) getLastSeen is a paper-only method.
+        long inactivityThresholdAsOfNow = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(gp.config_claims_expirationDays);
+
+        //if player's last login was before the configured inactivity date, this is an expired player
+        return lastPlayed < inactivityThresholdAsOfNow;
     }
 }

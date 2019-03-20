@@ -76,9 +76,9 @@ public class Auction implements ConfigurationSerializable
         sign.update(false, false);
     }
 
-    public void cancelSign()
+    public void endSign(String status)
     {
-        sign.setLine(1, ChatColor.DARK_GREEN + "Auction Canceled");
+        sign.setLine(1, ChatColor.DARK_GREEN + "Auction " + status);
         sign.update(false, false);
     }
 
