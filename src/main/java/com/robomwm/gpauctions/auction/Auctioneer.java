@@ -183,15 +183,15 @@ public class Auctioneer
         String location = GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation());
         String buyer = plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()).getName();
 
-        GPAuctions.lazyCmdDispatcher("broadcast [&6GPAuctions&f] &b The auction at &a" + location +
-                " &b has closed. The auction winner is &a" + buyer +
+        GPAuctions.lazyCmdDispatcher("broadcast &f[&6GPAuctions&f] &bThe auction at &a" + location +
+                " &bhas closed. The auction winner is &a" + buyer +
                 " &bwith a final bid of &a" + winningBid.getPrice() +
                 "&b.");
 
         GPAuctions.lazyCmdDispatcher("mail send " + buyer +
-                " [&6GPAuctions&f] &bYou have won the Auction! &a" + winningBid.getPrice() +
+                " &f[&6GPAuctions&f] &bYou have won the Auction! &a" + winningBid.getPrice() +
                 " &bhas been deducted from your account balance. Your new property at &a" + location +
-                "&b has been transferred into your care.");
+                " &bhas been transferred into your care.");
 
         if (auction.getOwner() == null)
             return;
