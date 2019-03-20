@@ -27,10 +27,11 @@ public class GPAuctions extends JavaPlugin
     {
         Config.initialize(this);
 
-        DataStore dataStore = ((GriefPrevention)(this.getServer().getPluginManager().getPlugin("GriefPrevention"))).dataStore;
+        GriefPrevention gp = (GriefPrevention)(this.getServer().getPluginManager().getPlugin("GriefPrevention"));
+        DataStore dataStore = gp.dataStore;
         
         ConfigurationSerialization.registerClass(Auction.class);
-        Auctioneer auctioneer = new Auctioneer(this, dataStore);
+        Auctioneer auctioneer = new Auctioneer(this, gp, dataStore);
         new CreateAuctionListener(this, auctioneer, dataStore);
         new MakeBidListener(this, auctioneer);
         new ClaimExpireListener(this, auctioneer);
