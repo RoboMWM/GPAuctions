@@ -99,9 +99,10 @@ public class Auctioneer
 
         Location location = auction.getSign().getLocation();
 
-        GPAuctions.lazyCmdDispatcher("broadcast [&6GPAuctions&f] &bAn auction has been created at &a" +
-                        location.getBlockX() + ", " + location.getBlockZ() +
-                        "&b. Bidding will start at &a" + auction.getNextBidPrice() + "&b.");
+        GPAuctions.lazyCmdDispatcher("broadcast &f[&6GPAuctions&f] &bAn auction has been created at &a" +
+                        GPAuctions.smallFriendlyCoordinate(location) +
+                "&b. Bidding will start at &a" + auction.getNextBidPrice() +
+                "&b.");
 
         return true;
     }
