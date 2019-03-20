@@ -176,6 +176,7 @@ public class Auctioneer
 
             if (isExpiredPlayer(owner))
             {
+                dataStore.deleteClaim(claim, true);
                 GPAuctions.lazyCmdDispatcher("mail send " + owner.getName() +
                         " &f[&6GPAuctions&f] &bYour auction at &a" +
                         GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation()) +

@@ -34,6 +34,8 @@ public class ClaimExpireListener implements Listener
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     private void onExpire(ClaimExpirationEvent event)
     {
+        event.setCancelled(true);
+
         if (auctioneer.getAuction(event.getClaim()) != null)
             return;
 
