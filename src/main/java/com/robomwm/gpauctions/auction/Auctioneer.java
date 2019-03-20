@@ -89,6 +89,7 @@ public class Auctioneer
             PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
             playerData.setBonusClaimBlocks(playerData.getBonusClaimBlocks() - claim.getArea());
             GPAuctions.debug("Deducted " + claim.getArea() + " bonus blocks from player " + auction.getOwner().toString());
+            dataStore.savePlayerData(auction.getOwner(), playerData);
         }
 
         auctions.put(auction.getClaimID(), auction);
@@ -168,6 +169,7 @@ public class Auctioneer
                     .setBonusClaimBlocks(
                             playerData.getBonusClaimBlocks() +
                                     claim.getArea());
+            dataStore.savePlayerData(auction.getOwner(), playerData);
             dataStore.changeClaimOwner(claim, auction.getOwner());
             plugin.getLogger().info("No winner, returning to owner " + auction.getOwner());
 
@@ -176,6 +178,7 @@ public class Auctioneer
 
         PlayerData winnerData = dataStore.getPlayerData(winningBid.getBidderUUID());
         winnerData.setBonusClaimBlocks(winnerData.getBonusClaimBlocks() + claim.getArea());
+        dataStore.savePlayerData(winningBid.getBidderUUID(), winnerData);
         dataStore.changeClaimOwner(claim, winningBid.getBidderUUID());
         economy.withdrawPlayer(plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()), winningBid.getPrice());
         plugin.getLogger().info("Transferred claim to winning bid " + winningBid.toString());
