@@ -66,7 +66,6 @@ public class ClaimExpireListener implements Listener
                 continue;
             }
 
-            location.setY(y + 1);
             location.getBlock().setType(Material.SIGN);
             sign = (Sign)location.getBlock().getState();
         }
