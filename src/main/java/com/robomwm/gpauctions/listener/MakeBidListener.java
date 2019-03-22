@@ -9,10 +9,12 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -37,6 +39,19 @@ public class MakeBidListener implements Listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    //Cancel auction if its sign is broken
+    @EventHandler(ignoreCancelled = true)
+    private void onSignBreak(BlockBreakEvent event)
+    {
+        if (!isAuctionSign(event.getBlock()))
+            return;
+
+        Auction auction = auctioneer.getAuction(event.getBlock().getLocation());
+
+        if (auction != null && auction.getSign().getLocation().equals(event.getBlock().getLocation()))
+            auctioneer.cancelAuction(auction);
+    }
+
     @EventHandler(ignoreCancelled = true)
     private void onSignClick(PlayerInteractEvent event)
     {
@@ -50,12 +65,8 @@ public class MakeBidListener implements Listener
                 return;
         }
 
-        if (event.getClickedBlock().getType() != Material.SIGN)
+        if (!isAuctionSign(event.getClickedBlock()))
             return;
-        GPAuctions.debug("Sign clicked");
-        if (!((Sign)event.getClickedBlock().getState()).getLine(0).equalsIgnoreCase("Real Estate"))
-            return;
-        GPAuctions.debug("Is a real estate-labeled sign");
 
         Auction auction = auctioneer.getAuction(event.getClickedBlock().getLocation());
         if (auction == null || !auction.getSign().getLocation().equals(event.getClickedBlock().getLocation()))
@@ -91,6 +102,17 @@ public class MakeBidListener implements Listener
         }
         else
             player.sendMessage("[&6GPAuctions&f] Error occurred when attempting to place a bid. (Auction has ended, likely.)");
+    }
+
+    private boolean isAuctionSign(Block block)
+    {
+        if (block.getType() != Material.SIGN)
+            return false;
+        GPAuctions.debug("Sign clicked");
+        if (!((Sign)block.getState()).getLine(0).equalsIgnoreCase("Real Estate"))
+            return false;
+        GPAuctions.debug("Is a real estate-labeled sign");
+        return true;
     }
 
     private String getInfo(Auction auction)
