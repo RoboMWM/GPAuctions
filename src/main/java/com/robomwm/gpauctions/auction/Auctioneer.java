@@ -158,8 +158,14 @@ public class Auctioneer
     private void endAuction(Auction auction)
     {
         plugin.getLogger().info("Auction " + auction.toString() + " ended.");
-        auction.endSign("Closed");
         Claim claim = dataStore.getClaim(auction.getClaimID());
+        if (claim == null)
+        {
+            plugin.getLogger().warning("Claim does not exist! Canceling auction instead...");
+            auction.endSign("Canceled");
+            return;
+        }
+        auction.endSign("Closed");
         PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
         Bid winningBid = findWinningBid(auction);
 
