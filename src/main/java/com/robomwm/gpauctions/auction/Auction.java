@@ -159,7 +159,7 @@ public class Auction implements ConfigurationSerializable
         List<String> bidsList = new ArrayList<>();
         for (Bid bid : bids)
             bidsList.add(bid.getBidderUUID() + "," + bid.getPrice());
-        Collections.reverse(bids);
+        Collections.reverse(bidsList);
         map.put("bids", bidsList);
         return map;
     }
