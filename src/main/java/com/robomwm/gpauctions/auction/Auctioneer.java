@@ -69,6 +69,7 @@ public class Auctioneer
                     {
                         endAuction(auction);
                         auctionIterator.remove();
+                        saveAuctions();
                     }
                 }
             }
@@ -135,6 +136,7 @@ public class Auctioneer
         auction = auctions.remove(auction.getClaimID());
         if (auction == null)
             return false;
+        saveAuctions();
         auction.endSign("Canceled");
 
         Claim claim = dataStore.getClaim(auction.getClaimID());
