@@ -145,7 +145,7 @@ public class Auctioneer
         return true;
     }
 
-    private void saveAuctions()
+    public void saveAuctions()
     {
         YamlConfiguration yaml = new YamlConfiguration();
         GPAuctions.debug("Starting to save auctions");

@@ -99,6 +99,7 @@ public class MakeBidListener implements Listener
                             auctioneer.getAuction(event.getClickedBlock().getLocation()).getEndTimeString() +
                             "&b."
             ));
+            auctioneer.saveAuctions();
         }
         else
             player.sendMessage("[&6GPAuctions&f] Error occurred when attempting to place a bid. (Auction has ended, likely.)");
