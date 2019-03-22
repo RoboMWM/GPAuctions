@@ -222,6 +222,8 @@ public class Auctioneer
         if (auction.getOwner() == null)
             return;
 
+        economy.depositPlayer(plugin.getServer().getOfflinePlayer(auction.getOwner()), winningBid.getPrice());
+
         String seller = plugin.getServer().getOfflinePlayer(auction.getOwner()).getName();
 
         GPAuctions.lazyCmdDispatcher("mail send " + seller +
