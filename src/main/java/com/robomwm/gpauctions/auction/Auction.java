@@ -11,12 +11,14 @@ import org.bukkit.block.Sign;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +33,7 @@ public class Auction implements ConfigurationSerializable
     private long endTime;
     private double startingBid;
     private UUID owner;
-    private Stack<Bid> bids = new Stack<>();
+    private Deque<Bid> bids = new ArrayDeque<>();
     private Sign sign;
 
     public Auction(Claim claim, long endTime, double startingBid, Sign sign)
@@ -140,7 +142,7 @@ public class Auction implements ConfigurationSerializable
         throw new NotImplementedException();
     }
 
-    public Stack<Bid> getBids()
+    public Collection<Bid> getBids()
     {
         return bids;
     }
