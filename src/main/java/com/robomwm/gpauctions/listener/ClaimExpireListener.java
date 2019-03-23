@@ -56,6 +56,7 @@ public class ClaimExpireListener implements Listener
         {
             //find highest block
             int y = location.getWorld().getHighestBlockYAt(location);
+
             //if highest block is at ceiling limit, try again along either x or z coordinate
             if (y >= 255)
             {
@@ -66,6 +67,7 @@ public class ClaimExpireListener implements Listener
                 continue;
             }
 
+            location.setY(y);
             location.getBlock().setType(Material.SIGN);
             sign = (Sign)location.getBlock().getState();
         }
