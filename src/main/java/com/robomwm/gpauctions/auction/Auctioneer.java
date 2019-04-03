@@ -9,6 +9,7 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -189,6 +190,8 @@ public class Auctioneer
                         " &f[&6GPAuctions&f] &bYour auction at &a" +
                         GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation()) +
                         "&b has closed without bidders. The claim has expired due to inactivity.");
+                auction.getSign().setType(Material.AIR);
+                auction.getSign().update();
                 return;
             }
 
@@ -227,6 +230,13 @@ public class Auctioneer
 
         if (auction.getOwner() == null)
             return;
+
+        OfflinePlayer owner = plugin.getServer().getOfflinePlayer(auction.getOwner());
+        if (isExpiredPlayer(owner))
+        {
+            auction.getSign().setType(Material.AIR);
+            auction.getSign().update();
+        }
 
         economy.depositPlayer(plugin.getServer().getOfflinePlayer(auction.getOwner()), winningBid.getPrice());
 
