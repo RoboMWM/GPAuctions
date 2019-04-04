@@ -122,7 +122,7 @@ public class MakeBidListener implements Listener
 
         String bidder = "No Bidders.";
         if (!auction.getBids().isEmpty())
-            bidder = "The most recent bidder is: &a" + Bukkit.getOfflinePlayer(auction.getBids().peek().getBidderUUID()).getName();
+            bidder = "The most recent bidder is: &a" + Bukkit.getOfflinePlayer(auction.getHighestBid().getBidderUUID()).getName();
 
         return ChatColor.translateAlternateColorCodes('&',
                 "&9----= &f[&6RealEstate Auction Info&f]&9=----\n" +

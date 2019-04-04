@@ -147,6 +147,13 @@ public class Auction implements ConfigurationSerializable
         return bids;
     }
 
+    public Bid getHighestBid()
+    {
+        if (bids.isEmpty())
+            return null;
+        return bids.getFirst();
+    }
+
     @Override
     public Map<String, Object> serialize()
     {
