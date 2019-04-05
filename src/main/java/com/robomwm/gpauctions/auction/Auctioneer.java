@@ -190,8 +190,8 @@ public class Auctioneer
                         " &f[&6GPAuctions&f] &bYour auction at &a" +
                         GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation()) +
                         "&b has closed without bidders. The claim has expired due to inactivity.");
-                auction.getSign().setType(Material.AIR);
-                auction.getSign().update();
+                GPAuctions.debug("Removing auction sign.");
+                auction.getSign().getLocation().getBlock().setType(Material.AIR);
                 return;
             }
 
@@ -234,8 +234,8 @@ public class Auctioneer
         OfflinePlayer owner = plugin.getServer().getOfflinePlayer(auction.getOwner());
         if (isExpiredPlayer(owner))
         {
-            auction.getSign().setType(Material.AIR);
-            auction.getSign().update();
+            GPAuctions.debug("Removing auction sign.");
+            auction.getSign().getLocation().getBlock().setType(Material.AIR);
         }
 
         economy.depositPlayer(plugin.getServer().getOfflinePlayer(auction.getOwner()), winningBid.getPrice());
