@@ -63,12 +63,14 @@ public class CreateAuctionListener implements Listener
         //only the claim owner can auction their claim. Check for admin claim permission for auctioning admin claims
         if (claim.ownerID == null && !event.getPlayer().hasPermission("griefprevention.adminclaims"))
             return;
-        if (claim.ownerID != event.getPlayer().getUniqueId())
+        else if (!claim.ownerID.equals(event.getPlayer().getUniqueId()))
             return;
 
         double startingBid;
         try
         {
+            if (event.getLine(1) == null)
+                return;
             startingBid = Double.parseDouble(event.getLine(1));
         }
         catch (NumberFormatException ignored)
