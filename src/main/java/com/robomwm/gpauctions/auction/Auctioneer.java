@@ -143,6 +143,18 @@ public class Auctioneer
         Claim claim = dataStore.getClaim(auction.getClaimID());
         dataStore.changeClaimOwner(claim, auction.getOwner());
 
+        if (auction.getOwner() == null)
+            return true;
+
+        GPAuctions.debug("Refunding claimblocks");
+        PlayerData playerData = dataStore.getPlayerData(auction.getOwner());
+
+        playerData
+                .setBonusClaimBlocks(
+                        playerData.getBonusClaimBlocks() +
+                                claim.getArea());
+        dataStore.savePlayerData(auction.getOwner(), playerData);
+
         return true;
     }
 
