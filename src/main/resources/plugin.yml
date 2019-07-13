@@ -3,7 +3,8 @@ author: RoboMWM
 version: ${project.version} commit ${git.commit.id.abbrev}
 main: com.robomwm.gpauctions.GPAuctions
 depend: [GriefPrevention, Vault]
-api-version: 1.13
+softdepend: [GPRealEstate]
+api-version: '1.13'
 commands:
   gpauctions:
     usage: /gpauctions

@@ -4,6 +4,7 @@ import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import com.robomwm.gpauctions.command.CancelCommand;
 import com.robomwm.gpauctions.listener.ClaimExpireListener;
+import com.robomwm.gpauctions.listener.ClaimSaleListener;
 import com.robomwm.gpauctions.listener.CreateAuctionListener;
 import com.robomwm.gpauctions.listener.MakeBidListener;
 import me.ryanhamshire.GriefPrevention.DataStore;
@@ -32,9 +33,12 @@ public class GPAuctions extends JavaPlugin
         
         ConfigurationSerialization.registerClass(Auction.class);
         Auctioneer auctioneer = new Auctioneer(this, gp, dataStore);
+
         new CreateAuctionListener(this, auctioneer, dataStore);
         new MakeBidListener(this, auctioneer);
         new ClaimExpireListener(this, auctioneer);
+        new ClaimSaleListener(this, auctioneer);
+
         getCommand("gpacancel").setExecutor(new CancelCommand(auctioneer));
     }
 
