@@ -24,6 +24,7 @@ public class ClaimSaleListener implements Listener
         GPRealEstate gpRealEstate = (GPRealEstate)plugin.getServer().getPluginManager().getPlugin("GPRealEstate");
         if (gpRealEstate == null || !gpRealEstate.isEnabled())
             return;
+        this.auctioneer = auctioneer;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
