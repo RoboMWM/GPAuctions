@@ -1,3 +1,5 @@
-Support and feature requests available to [Patrons](http://r.robomwm.com/patreon)
+Project description page + downloads: [coming soon](https://github.com/RoboMWM/GPAuctions/issues/57)
 
-[Latest download](https://ci.appveyor.com/project/RoboMWM39862/gpauctions)
+[Commands and permissions reference](src/main/resources/plugin.yml)
+
+Bug reports can be [submitted here](../../issues). Support and feature requests are available to [patrons](https://r.robomwm.com/patreon).
