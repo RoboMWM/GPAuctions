@@ -4,11 +4,12 @@ import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
 import com.robomwm.gpauctions.auction.Bid;
-import com.robomwm.usefulutil.UsefulUtil;
+import com.robomwm.usefulutils.UsefulUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -107,7 +108,7 @@ public class MakeBidListener implements Listener
 
     private boolean isAuctionSign(Block block)
     {
-        if (block.getType() != Material.SIGN)
+        if (Tag.SIGNS.isTagged(block.getType()))
             return false;
         GPAuctions.debug("Sign clicked");
         if (!((Sign)block.getState()).getLine(0).equalsIgnoreCase("Real Estate"))
@@ -118,7 +119,7 @@ public class MakeBidListener implements Listener
 
     private String getInfo(Auction auction)
     {
-        String time = UsefulUtil.formatTime(TimeUnit.MILLISECONDS.toSeconds(auction.getEndTime() - System.currentTimeMillis()));
+        String time = UsefulUtils.formatTime(TimeUnit.MILLISECONDS.toSeconds(auction.getEndTime() - System.currentTimeMillis()));
 
         String bidder = "No Bidders.";
         if (!auction.getBids().isEmpty())

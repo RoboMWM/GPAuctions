@@ -2,7 +2,7 @@ package com.robomwm.gpauctions.auction;
 
 import com.robomwm.gpauctions.Config;
 import com.robomwm.gpauctions.GPAuctions;
-import com.robomwm.usefulutil.UsefulUtil;
+import com.robomwm.usefulutils.UsefulUtils;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -188,6 +188,6 @@ public class Auction implements ConfigurationSerializable
 
     public String getEndTimeString()
     {
-        return UsefulUtil.formatTime(TimeUnit.MILLISECONDS.toSeconds(this.getEndTime() - System.currentTimeMillis()));
+        return UsefulUtils.formatTime(TimeUnit.MILLISECONDS.toSeconds(this.getEndTime() - System.currentTimeMillis()));
     }
 }

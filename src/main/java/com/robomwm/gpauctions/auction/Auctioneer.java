@@ -1,7 +1,7 @@
 package com.robomwm.gpauctions.auction;
 
 import com.robomwm.gpauctions.GPAuctions;
-import com.robomwm.usefulutil.UsefulUtil;
+import com.robomwm.usefulutils.FileUtils;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -164,7 +164,7 @@ public class Auctioneer
         GPAuctions.debug("Starting to save auctions");
         for (Auction auction : auctions.values())
             yaml.set(String.valueOf(auction.getClaimID()), auction);
-        UsefulUtil.saveStringToFile(plugin, file, yaml.saveToString());
+        FileUtils.saveStringToFile(plugin, file, yaml.saveToString());
         GPAuctions.debug("Saved auctions to file.");
     }
 
