@@ -108,7 +108,7 @@ public class MakeBidListener implements Listener
 
     private boolean isAuctionSign(Block block)
     {
-        if (Tag.SIGNS.isTagged(block.getType()))
+        if (!Tag.SIGNS.isTagged(block.getType()))
             return false;
         GPAuctions.debug("Sign clicked");
         if (!((Sign)block.getState()).getLine(0).equalsIgnoreCase("Real Estate"))
