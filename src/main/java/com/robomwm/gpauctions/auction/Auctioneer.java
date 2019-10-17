@@ -1,5 +1,6 @@
 package com.robomwm.gpauctions.auction;
 
+import com.robomwm.gpauctions.Config;
 import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.usefulutils.FileUtils;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -165,8 +166,8 @@ public class Auctioneer
         for (Auction auction : auctions.values())
             yaml.set(String.valueOf(auction.getClaimID()), auction);
         FileUtils.saveStringToFile(plugin, file, yaml.saveToString());
-        //TODO: remove debug
-        FileUtils.saveStringToFile(plugin, new File(plugin.getDataFolder() + File.separator + "auctions" + System.currentTimeMillis() + ".data"), yaml.saveToString());
+        if (Config.DEBUG.asBoolean())
+            FileUtils.saveStringToFile(plugin, new File(plugin.getDataFolder() + File.separator + "auctions" + System.currentTimeMillis() + ".data"), yaml.saveToString());
         GPAuctions.debug("Saved auctions to file.");
     }
 
