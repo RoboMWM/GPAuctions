@@ -44,7 +44,8 @@ public class GPAuctions extends JavaPlugin
 
     public static void debug(Object object)
     {
-        System.out.println("[GPAuctions] " + object);
+        if (Config.DEBUG.asBoolean())
+            System.out.println("[GPAuctions] " + object);
     }
 
     public static String smallFriendlyCoordinate(Location location)

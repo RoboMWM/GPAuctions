@@ -16,7 +16,8 @@ public enum Config
     BID_PERCENTAGE(1.1D),
     SIGN_HEADER(Arrays.asList("[auction claim]", "[ac]")),
     DEFAULT_AUCTION_DURATION_HOURS(720),
-    DEFAULT_STARTING_PRICE_PER_CLAIMBLOCK(1);
+    DEFAULT_STARTING_PRICE_PER_CLAIMBLOCK(1),
+    DEBUG(false);
 
     public static void initialize(Plugin plugin)
     {
@@ -46,6 +47,11 @@ public enum Config
     Config(Object value)
     {
         this.value = value;
+    }
+
+    public boolean asBoolean()
+    {
+        return (boolean)value;
     }
 
     public Object getValue()
