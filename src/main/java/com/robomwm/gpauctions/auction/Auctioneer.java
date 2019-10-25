@@ -207,6 +207,10 @@ public class Auctioneer
                         "&b has closed without bidders. The claim has expired due to inactivity.");
                 GPAuctions.debug("Removing auction sign.");
                 auction.getSign().getLocation().getBlock().setType(Material.AIR);
+                playerData
+                        .setBonusClaimBlocks(
+                                playerData.getBonusClaimBlocks() +
+                                        claim.getArea());
                 return;
             }
 
