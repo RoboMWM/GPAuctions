@@ -55,7 +55,7 @@ public class ClaimExpireListener implements Listener
         while (sign == null)
         {
             //find highest block
-            int y = location.getWorld().getHighestBlockYAt(location);
+            int y = location.getWorld().getHighestBlockYAt(location) + 1;
 
             //if highest block is at ceiling limit, try again along either x or z coordinate
             if (y >= 255)
