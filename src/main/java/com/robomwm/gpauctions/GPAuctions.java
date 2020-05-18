@@ -50,7 +50,7 @@ public class GPAuctions extends JavaPlugin
 
     public static String smallFriendlyCoordinate(Location location)
     {
-        return location.getBlockX() + ", " + location.getBlockZ();
+        return location.getWorld() + " " + location.getBlockX() + ", " + location.getBlockZ();
     }
 
     public static void lazyCmdDispatcher(String command)
