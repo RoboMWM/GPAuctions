@@ -1,5 +1,6 @@
 package com.robomwm.gpauctions.listener;
 
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import com.robomwm.gpauctions.GPAuctions;
 import com.robomwm.gpauctions.auction.Auction;
 import com.robomwm.gpauctions.auction.Auctioneer;
@@ -40,9 +41,9 @@ public class MakeBidListener implements Listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    //Cancel auction if its sign is broken
+    //Cancel auction if its sign is broken TODO: out of scope, or rename class. Also assumes that this covers BlockBreakEvent
     @EventHandler(ignoreCancelled = true)
-    private void onSignBreak(BlockBreakEvent event)
+    private void onSignBreak(BlockDestroyEvent event)
     {
         if (!isAuctionSign(event.getBlock()))
             return;
