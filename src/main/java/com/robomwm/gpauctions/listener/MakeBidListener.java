@@ -41,7 +41,20 @@ public class MakeBidListener implements Listener
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    //Cancel auction if its sign is broken TODO: out of scope, or rename class. Also assumes that this covers BlockBreakEvent
+    //Cancel auction if its sign is broken TODO: out of scope, or rename class
+    @EventHandler(ignoreCancelled = true)
+    private void onSignBreak(BlockBreakEvent event)
+    {
+        if (!isAuctionSign(event.getBlock()))
+            return;
+
+        Auction auction = auctioneer.getAuction(event.getBlock().getLocation());
+
+        if (auction != null && auction.getSign().getLocation().equals(event.getBlock().getLocation()))
+            auctioneer.cancelAuction(auction);
+    }
+
+    //Cancel auction if the environment breaks the sign TODO: Also out of scope
     @EventHandler(ignoreCancelled = true)
     private void onSignBreak(BlockDestroyEvent event)
     {
