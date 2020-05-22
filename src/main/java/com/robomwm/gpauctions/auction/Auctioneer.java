@@ -107,7 +107,7 @@ public class Auctioneer
 
         Location location = auction.getSign().getLocation();
 
-        GPAuctions.lazyCmdDispatcher("broadcast &f[&6GPAuctions&f] &bAn auction has been created at &a" +
+        GPAuctions.lazyCmdDispatcher("broadcast &f[&6GPAuctions&f] &bAn auction has been created at&a " +
                         GPAuctions.smallFriendlyCoordinate(location) +
                 "&b. Bidding will start at &a" + auction.getNextBidPrice() +
                 "&b.");
@@ -202,7 +202,7 @@ public class Auctioneer
             {
                 dataStore.deleteClaim(claim, true);
                 GPAuctions.lazyCmdDispatcher("mail send " + owner.getName() +
-                        " &f[&6GPAuctions&f] &bYour auction at &a" +
+                        " &f[&6GPAuctions&f] &bYour auction at&a " +
                         GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation()) +
                         "&b has closed without bidders. The claim has expired due to inactivity.");
                 GPAuctions.debug("Removing auction sign.");
@@ -237,14 +237,14 @@ public class Auctioneer
         String location = GPAuctions.smallFriendlyCoordinate(auction.getSign().getLocation());
         String buyer = plugin.getServer().getOfflinePlayer(winningBid.getBidderUUID()).getName();
 
-        GPAuctions.lazyCmdDispatcher("broadcast &f[&6GPAuctions&f] &bThe auction at &a" + location +
+        GPAuctions.lazyCmdDispatcher("broadcast &f[&6GPAuctions&f] &bThe auction at&a " + location +
                 " &bhas closed. The auction winner is &a" + buyer +
                 " &bwith a final bid of &a" + winningBid.getPrice() +
                 "&b.");
 
         GPAuctions.lazyCmdDispatcher("mail send " + buyer +
                 " &f[&6GPAuctions&f] &bYou have won the Auction! &a" + winningBid.getPrice() +
-                " &bhas been deducted from your account balance. Your new property at &a" + location +
+                " &bhas been deducted from your account balance. Your new property at&a " + location +
                 " &bhas been transferred into your care.");
 
         if (auction.getOwner() == null)
@@ -263,7 +263,7 @@ public class Auctioneer
 
         GPAuctions.lazyCmdDispatcher("mail send " + seller +
                 " [&6GPAuctions&f] &a" + buyer +
-                " &bhas won your auction at &a" + location +
+                " &bhas won your auction at&a " + location +
                 " &b. The final bid was &a" + winningBid.getPrice() +
                 "&b.");
     }
